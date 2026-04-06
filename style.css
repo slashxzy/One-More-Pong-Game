@@ -1,0 +1,14 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Запрещаем скролл всей страницы */
+    background-color: #000; /* Цвет фона за пределами канваса */
+}
+
+canvas {
+    display: block; /* Убираем лишние отступы снизу */
+    width: 100vw;   /* Ширина на всё окно */
+    height: 100vh;  /* Высота на всё окно */
+}
