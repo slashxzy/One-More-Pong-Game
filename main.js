@@ -209,30 +209,43 @@ function boosterSpawn(){
 
 let isGameStarted = false;
 
-let canMovePaddle = false;
+let canMovePaddle = true;
 
-canvas.addEventListener('mousemove', (event) => {
-    if (event.clientY >= canvas.height / 2 && canMovePaddle) {
-        paddle.x = event.clientX - paddle.width / 2;
-        paddle.y = event.clientY - paddle.height / 2
-    }
-});
+// canvas.addEventListener('mousemove', (event) => {
+//     if (event.clientY >= canvas.height / 2 && canMovePaddle) {
+//         paddle.x = event.clientX - paddle.width / 2;
+//         paddle.y = event.clientY - paddle.height / 2
+//     }
+// });
 canvas.addEventListener('mousedown', (event) => {
     if (!isGameStarted) {
         isGameStarted = true;
         ball.dx = randomVariant(variable.ballDx, -variable.ballDx);
     }
-    if (event.clientY >= paddle.y &&
-        event.clientY <= paddle.y + paddle.height &&
-        event.clientX >= paddle.x &&
-        event.clientX <= paddle.x + paddle.width) {
-        canMovePaddle = true;
-    }
+    // if (event.clientY >= paddle.y &&
+    //     event.clientY <= paddle.y + paddle.height &&
+    //     event.clientX >= paddle.x &&
+    //     event.clientX <= paddle.x + paddle.width) {
+    //     canMovePaddle = true;
+    // }
 });
 
-canvas.addEventListener('mouseup', (event) => {
-    canMovePaddle = false;
-})
+// canvas.addEventListener('mouseup', (event) => {
+//     canMovePaddle = false;
+// })
+
+canvas.addEventListener('touchmove', (e) => {
+    // Prevent the default scrolling behavior
+    e.preventDefault();
+
+    // Get the first touch point
+    const touch = e.touches[0];
+
+    // Set the object position to the finger's coordinates
+    // clientX/Y are relative to the viewport
+    paddle.x = touch.clientX + 'px';
+    paddle.y = touch.clientY + 'px';
+}, { passive: false });
 
 function getArrayValue(array, callback) {
     for (let i = array.length - 1; i >= 0; i--) {
