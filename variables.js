@@ -3,7 +3,7 @@
 // export let canvasHeight = 800;
 
 //Ball
-export const ballSprite = "./Assets/Sprites/ball.png";
+export const ballSprite = "./Assets/Sprites/Ball.png";
 // export let ballX = canvas.width / 2 ;
 // export let ballY = canvas.height / 2;
 export let ballWidth = 20;
