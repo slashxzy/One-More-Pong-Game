@@ -421,7 +421,7 @@ function drawPaddle() {
 }
 
 function drawBall() {
-    drawSprite(ballSprite, ball);
+    drawRect(ball, "yellow");
 }
 
 function drawTarget() {
