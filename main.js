@@ -217,7 +217,7 @@ function boosterSpawn(){
 
 let isGameStarted = false;
 
-let canMovePaddle = false;
+let canMovePaddle = true;
 
 // canvas.addEventListener('mousemove', (event) => {
 //     if (event.clientY >= canvas.height / 2 && canMovePaddle) {
@@ -239,7 +239,7 @@ canvas.addEventListener('mousedown', (event) => {
 });
 
 canvas.addEventListener('mouseup', (event) => {
-    canMovePaddle = false;
+    // canMovePaddle = false;
 })
 
 canvas.addEventListener('pointermove', (event) => {
