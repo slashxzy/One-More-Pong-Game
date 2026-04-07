@@ -256,6 +256,7 @@ canvas.addEventListener('pointermove', (event) => {
         paddle.x = pos.x - paddle.width / 2;
         paddle.y = pos.y - paddle.height / 2;
     }
+    event.preventDefault();
 });
 
 function getArrayValue(array, callback) {
