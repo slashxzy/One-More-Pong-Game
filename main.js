@@ -252,8 +252,10 @@ canvas.addEventListener('pointermove', (event) => {
     //     }
     // }
     const pos = getPointerPos(canvas, event);
-    paddle.x = pos.x - paddle.width / 2;
-    paddle.y = pos.y - paddle.height / 2;
+    if(pos.y >= canvas.height /2) {
+        paddle.x = pos.x - paddle.width / 2;
+        paddle.y = pos.y - paddle.height / 2;
+    }
 });
 
 function getArrayValue(array, callback) {
