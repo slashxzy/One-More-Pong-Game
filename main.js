@@ -463,7 +463,9 @@ function drawRect(sprite, color) {
 }
 
 function drawSprite(image, sprite){
-    context.drawImage(image, sprite.x, sprite.y, sprite.width, sprite.height);
+    if(image.complete && image.naturalWidth !== 0){
+        context.drawImage(image, sprite.x, sprite.y, sprite.width, sprite.height);
+    }
 }
 
 function randomRange(min, max) {
