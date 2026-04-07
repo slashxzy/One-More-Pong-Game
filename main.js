@@ -217,7 +217,7 @@ function boosterSpawn(){
 
 let isGameStarted = false;
 
-let canMovePaddle = true;
+// let canMovePaddle = true;
 
 // canvas.addEventListener('mousemove', (event) => {
 //     if (event.clientY >= canvas.height / 2 && canMovePaddle) {
@@ -230,12 +230,12 @@ canvas.addEventListener('mousedown', (event) => {
         isGameStarted = true;
         ball.dx = randomVariant(variable.ballDx, -variable.ballDx);
     }
-    if (event.clientY >= paddle.y &&
-        event.clientY <= paddle.y + paddle.height &&
-        event.clientX >= paddle.x &&
-        event.clientX <= paddle.x + paddle.width) {
-        canMovePaddle = true;
-    }
+    // if (event.clientY >= paddle.y &&
+    //     event.clientY <= paddle.y + paddle.height &&
+    //     event.clientX >= paddle.x &&
+    //     event.clientX <= paddle.x + paddle.width) {
+    //     canMovePaddle = true;
+    // }
 });
 
 canvas.addEventListener('mouseup', (event) => {
@@ -244,9 +244,10 @@ canvas.addEventListener('mouseup', (event) => {
 
 canvas.addEventListener('pointermove', (event) => {
     if (event.buttons > 0) { // Проверяем, что палец или кнопка нажаты
-        if (event.clientY >= canvas.height / 2 && canMovePaddle) {
+        if (event.clientY >= canvas.height / 2) {
             paddle.x = event.clientX - paddle.width / 2;
             paddle.y = event.clientY - paddle.height / 2
+            console.log("moving");
         }
     }
 });
