@@ -8,6 +8,7 @@ body, html {
 }
 
 canvas {
+    touch-action: none;
     display: block; /* Убираем лишние отступы снизу */
     width: 100vw;   /* Ширина на всё окно */
     height: 100vh;  /* Высота на всё окно */
