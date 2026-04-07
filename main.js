@@ -9,8 +9,8 @@ function resizeCanvas() {
     canvas.height = window.innerHeight;
 }
 
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
+// window.addEventListener('resize', resizeCanvas);
+// resizeCanvas();
 
 canvas.style.backgroundColor = "#f67007";
 document.body.style.backgroundColor = "#191a1c";
