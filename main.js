@@ -219,12 +219,12 @@ let isGameStarted = false;
 
 let canMovePaddle = false;
 
-canvas.addEventListener('mousemove', (event) => {
-    if (event.clientY >= canvas.height / 2 && canMovePaddle) {
-        paddle.x = event.clientX - paddle.width / 2;
-        paddle.y = event.clientY - paddle.height / 2
-    }
-});
+// canvas.addEventListener('mousemove', (event) => {
+//     if (event.clientY >= canvas.height / 2 && canMovePaddle) {
+//         paddle.x = event.clientX - paddle.width / 2;
+//         paddle.y = event.clientY - paddle.height / 2
+//     }
+// });
 canvas.addEventListener('mousedown', (event) => {
     if (!isGameStarted) {
         isGameStarted = true;
@@ -241,6 +241,15 @@ canvas.addEventListener('mousedown', (event) => {
 canvas.addEventListener('mouseup', (event) => {
     canMovePaddle = false;
 })
+
+canvas.addEventListener('pointermove', (event) => {
+    if (event.buttons > 0) { // Проверяем, что палец или кнопка нажаты
+        if (event.clientY >= canvas.height / 2 && canMovePaddle) {
+            paddle.x = event.clientX - paddle.width / 2;
+            paddle.y = event.clientY - paddle.height / 2
+        }
+    }
+});
 
 function getArrayValue(array, callback) {
     for (let i = array.length - 1; i >= 0; i--) {
