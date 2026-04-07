@@ -9,8 +9,8 @@ function resizeCanvas() {
     canvas.height = window.innerHeight;
 }
 
-// window.addEventListener('resize', resizeCanvas);
-// resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
 
 canvas.style.backgroundColor = "#f67007";
 document.body.style.backgroundColor = "#191a1c";
@@ -27,13 +27,17 @@ ballSizeUpBoosterSprite.src = variable.ballSizeUpBoosterSprite;
 const ballSizeDownBoosterSprite = new Image();
 ballSizeDownBoosterSprite.src = variable.ballSizeDownBoosterSprite;
 
+function setSizeOfPercentOfScreen(canvasSize, elementSize){
+    return canvasSize / 100 * elementSize;
+}
+
 const ball = {
-    x: (canvas.width / 2) - variable.ballWidth / 2,
-    y: (canvas.height / 2) - variable.ballHeight / 2,
+    x: (canvas.width / 2) -  setSizeOfPercentOfScreen(canvas.width, variable.ballWidth) / 2,
+    y: (canvas.height / 2) - setSizeOfPercentOfScreen(canvas.width, variable.ballHeight) / 2,
     dx: variable.ballDx,
     dy: variable.ballDy,
-    width: variable.ballWidth,
-    height: variable.ballHeight
+    width: setSizeOfPercentOfScreen(canvas.width, variable.ballWidth),
+    height: setSizeOfPercentOfScreen(canvas.width, variable.ballHeight),
 };
 
 const maxBallSpeedY = variable.maxBallSpeedY;
@@ -45,10 +49,10 @@ const frictionY = variable.frictionY;
 const frictionX = variable.frictionX;
 
 const paddle = {
-    x: (canvas.width - variable.paddleWidth) / 2,
-    y: canvas.height / 2 + canvas.height / 4 - variable.paddleHeight / 2,
-    width: variable.paddleWidth,
-    height: variable.paddleHeight,
+    x: (canvas.width - setSizeOfPercentOfScreen(canvas.width, variable.paddleWidth)) / 2,
+    y: canvas.height / 2 + canvas.height / 4 - setSizeOfPercentOfScreen(canvas.width, variable.paddleHeight) / 2,
+    width: setSizeOfPercentOfScreen(canvas.width, variable.paddleWidth),
+    height: setSizeOfPercentOfScreen(canvas.width, variable.paddleHeight),
     prevY: 0,
     prevX: 0,
     speedY: 0,
@@ -59,21 +63,21 @@ const line = {
     x: 0,
     y: canvas.height / 2 - variable.lineHeight / 2,
     width: canvas.width,
-    height: variable.lineHeight,
+    height: setSizeOfPercentOfScreen(canvas.width, variable.lineHeight)
 }
 
 const target = {
     x: (canvas.width - 80) / 2,
     y: 0,
-    width: variable.targetWidth,
-    height: variable.targetHeight,
+    width: setSizeOfPercentOfScreen(canvas.width, variable.targetWidth),
+    height: setSizeOfPercentOfScreen(canvas.width, variable.targetHeight)
 };
 
 const deathZone = {
     x: 0,
-    y: canvas.height - 20,
+    y: canvas.height - setSizeOfPercentOfScreen(canvas.width, variable.deadZoneHeight),
     width: canvas.width,
-    height: variable.deadZoneHeight,
+    height: setSizeOfPercentOfScreen(canvas.width, variable.deadZoneHeight)
 };
 
 class BoosterType {
@@ -203,49 +207,40 @@ function spawnRandomBooster() {
 function boosterSpawn(){
     const newBoosterType = spawnRandomBooster();
 
-    let randomBooster = new Booster(randomRange(0, canvas.width - 25), randomRange(0, canvas.height / 2 - 25 - 25), 25, 25, newBoosterType); //boosterTypesArray[index]);
+    let randomBooster = new Booster(randomRange(0, canvas.width - 25),
+        randomRange(0, canvas.height / 2 - 25 - 25),
+        setSizeOfPercentOfScreen(canvas.width, variable.boosterSize),
+        setSizeOfPercentOfScreen(canvas.width, variable.boosterSize),
+        newBoosterType);
     boostersOnFieldArray.push(randomBooster);
 }
 
 let isGameStarted = false;
 
-let canMovePaddle = true;
+let canMovePaddle = false;
 
-// canvas.addEventListener('mousemove', (event) => {
-//     if (event.clientY >= canvas.height / 2 && canMovePaddle) {
-//         paddle.x = event.clientX - paddle.width / 2;
-//         paddle.y = event.clientY - paddle.height / 2
-//     }
-// });
+canvas.addEventListener('mousemove', (event) => {
+    if (event.clientY >= canvas.height / 2 && canMovePaddle) {
+        paddle.x = event.clientX - paddle.width / 2;
+        paddle.y = event.clientY - paddle.height / 2
+    }
+});
 canvas.addEventListener('mousedown', (event) => {
     if (!isGameStarted) {
         isGameStarted = true;
         ball.dx = randomVariant(variable.ballDx, -variable.ballDx);
     }
-    // if (event.clientY >= paddle.y &&
-    //     event.clientY <= paddle.y + paddle.height &&
-    //     event.clientX >= paddle.x &&
-    //     event.clientX <= paddle.x + paddle.width) {
-    //     canMovePaddle = true;
-    // }
+    if (event.clientY >= paddle.y &&
+        event.clientY <= paddle.y + paddle.height &&
+        event.clientX >= paddle.x &&
+        event.clientX <= paddle.x + paddle.width) {
+        canMovePaddle = true;
+    }
 });
 
-// canvas.addEventListener('mouseup', (event) => {
-//     canMovePaddle = false;
-// })
-
-canvas.addEventListener('touchmove', (e) => {
-    // Prevent the default scrolling behavior
-    e.preventDefault();
-
-    // Get the first touch point
-    const touch = e.touches[0];
-
-    // Set the object position to the finger's coordinates
-    // clientX/Y are relative to the viewport
-    paddle.x = touch.clientX + 'px';
-    paddle.y = touch.clientY + 'px';
-}, { passive: false });
+canvas.addEventListener('mouseup', (event) => {
+    canMovePaddle = false;
+})
 
 function getArrayValue(array, callback) {
     for (let i = array.length - 1; i >= 0; i--) {
@@ -406,15 +401,15 @@ function handlePaddleCollision(ball, paddle) {
 
 function reachTarget() {
     score.scoreValue++;
-    target.width = randomRange(variable.targetMinWidth, variable.targetMaxWidth)
+    target.width = randomRange(setSizeOfPercentOfScreen(canvas.width,variable.targetMinWidth) , setSizeOfPercentOfScreen(canvas.width, variable.targetMaxWidth));
     target.x = randomRange(0, canvas.width - target.width);
 }
 
 function resetGame() {
     isGameStarted = false;
     score.scoreValue = 0;
-    ball.x = canvas.width / 2 - ball.width / 2;
-    ball.y = canvas.height / 2 - ball.width / 2;
+    ball.x = canvas.width / 2 - setSizeOfPercentOfScreen(canvas.width, variable.ballWidth) / 2;
+    ball.y = canvas.height / 2 - setSizeOfPercentOfScreen(canvas.width, variable.ballWidth) / 2;
     ball.dx = variable.ballDx;
     ball.dy = variable.ballDy;
 
@@ -434,7 +429,7 @@ function drawPaddle() {
 }
 
 function drawBall() {
-    drawRect(ball, "yellow");
+    drawSprite(ballSprite, ball);
 }
 
 function drawTarget() {
@@ -452,7 +447,7 @@ function drawLine() {
 function drawText() {
     context.beginPath();
     context.fillStyle = "purple";
-    context.font = "bold 32px Verdana";
+    context.font = "bold 52px Verdana";
     context.textAlign = 'center';
     context.textBaseline = 'middle';
     context.fillText(scoreText, (canvas.width / 2), (canvas.height / 4));
