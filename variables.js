@@ -3,11 +3,11 @@
 // export let canvasHeight = 800;
 
 //Ball
-export const ballSprite = "./Assets/Sprites/BallPixelArt.png";
+export const ballSprite = "./Assets/Sprites/ball.png";
 // export let ballX = canvas.width / 2 ;
 // export let ballY = canvas.height / 2;
-export let ballWidth = 20;
-export let ballHeight = 20;
+export let ballWidth = 5;
+export let ballHeight = 5;
 export let ballDx = 2;
 export let ballDy = 2;
 
@@ -21,22 +21,23 @@ export const frictionY = 0.7;
 export const frictionX = 0.2;
 
 //Paddle
-export let paddleWidth = 100;
-export let paddleHeight = 20;
+export let paddleWidth = 20;
+export let paddleHeight = 5;
 
 //Target
-export let targetMinWidth = 20;
-export let targetMaxWidth = 100;
-export let targetWidth = 80;
-export let targetHeight = 20;
+export let targetMinWidth = 5;
+export let targetMaxWidth = 20;
+export let targetWidth = 16;
+export let targetHeight = 5;
 
 //Line
-export let lineHeight = 4;
+export let lineHeight = 1;
 
 //DeadZone
-export let deadZoneHeight = 20;
+export let deadZoneHeight = 5;
 
 //Boosters
+export const boosterSize = 10;
 export const boosterSpawnStep = 1;
 export const boosterSpawnChance = 100;
 export const percentOfHiddenSpriteOfBooster = 36;
