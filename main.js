@@ -217,6 +217,8 @@ function boosterSpawn(){
 
 let isGameStarted = false;
 
+// let canMovePaddle = true;
+
 function getPointerPos(canvas, event) {
     const rect = canvas.getBoundingClientRect();
     return {

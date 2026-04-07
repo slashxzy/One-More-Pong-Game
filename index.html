@@ -3,11 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Omg</title>
+    <script src="https://telegram.org"></script>
 </head>
 <body>
 <canvas id="pong" width="1080" height="1920"></canvas>
 <link rel="stylesheet" href="style.css">
 <script type="module" src="main.js"></script>
 <script type ="module" src="variables.js"></script>
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.ready(); // Сообщаем Telegram, что игра готова
+    tg.expand(); // Разворачиваем на весь экран
+</script>
 </body>
 </html>
