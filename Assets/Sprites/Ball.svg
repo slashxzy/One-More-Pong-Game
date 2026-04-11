@@ -1,0 +1,17 @@
+<svg id="Ball" xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        stroke: #000;
+        stroke-width: 1px;
+      }
+
+      .cls-2 {
+        fill: #ffd900;
+      }
+    </style>
+  </defs>
+  <circle class="cls-1" cx="64" cy="64" r="63"/>
+  <circle class="cls-2" cx="79.781" cy="32.25" r="11.5"/>
+  <circle class="cls-2" cx="102.781" cy="55.25" r="11.5"/>
+</svg>

@@ -1,0 +1,39 @@
+<svg id="Ball" xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: purple;
+        stroke-width: 10px;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        stroke: #000;
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+        stroke-width: 1px;
+      }
+
+      .cls-3, .cls-4 {
+        fill: #ffd900;
+      }
+
+      .cls-4, .cls-5 {
+        fill-rule: evenodd;
+      }
+
+      .cls-5 {
+        fill: #1eff00;
+        stroke: #1eff00;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 4px;
+      }
+    </style>
+  </defs>
+  <circle class="cls-1" cx="64" cy="64" r="59"/>
+  <circle class="cls-2" cx="43.891" cy="64" r="31.766"/>
+  <circle class="cls-3" cx="51.734" cy="48.234" r="5.703"/>
+  <path class="cls-4" d="M63.141,53.944a5.707,5.707,0,1,1-5.707,5.707A5.707,5.707,0,0,1,63.141,53.944Z"/>
+  <path id="Line_1" data-name="Line 1" class="cls-5" d="M90.649,39.035h3.96V91.755h-3.96V39.035ZM91.8,36.31l2.1,2.1L81.157,51.165l-2.1-2.1Zm-0.876,2.1,2.1-2.1,12.751,12.752-2.1,2.1Z"/>
+</svg>

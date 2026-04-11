@@ -3,7 +3,7 @@
 // export let canvasHeight = 800;
 
 //Ball
-export const ballSprite = "./Assets/Sprites/Ball.png";
+export const ballSprite = "./Assets/Sprites/Ball.svg";
 // export let ballX = canvas.width / 2 ;
 // export let ballY = canvas.height / 2;
 export let ballWidth = 7;
@@ -11,7 +11,7 @@ export let ballHeight = 7;
 export let ballDx = 2;
 export let ballDy = 2;
 
-export const maxBallSpeedY = 16;
+export const maxBallSpeedY = 15;
 export const maxBallSpeedX = 10;
 export const minBallSpeedY = 1;
 export const minBallSpeedX = 1;
@@ -43,10 +43,10 @@ export const boosterMinLifeTime = 4;
 export const boosterMaxLifeTime = 10;
 
 export const boosterSpawnStep = 1;
-export const boosterSpawnChance = 1;
+export const boosterSpawnChance = 100;
 export const percentOfHiddenSpriteOfBooster = 36;
 
-export const hiddenBoosterSprite = "./Assets/Sprites/HiddenBooster.png";
-export const ballSizeUpBoosterSprite = "./Assets/Sprites/BallSizeUpBooster.png";
+export const hiddenBoosterSprite = "./Assets/Sprites/HiddenBooster.svg";
+export const ballSizeUpBoosterSprite = "./Assets/Sprites/BallSizeUpBooster.svg";
 export const ballSizeUpBoosterValue = 3;
-export const ballSizeDownBoosterSprite = "./Assets/Sprites/BallSizeDownBooster.png";
+export const ballSizeDownBoosterSprite = "./Assets/Sprites/BallSizeDownBooster.svg";
