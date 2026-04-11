@@ -1,5 +1,5 @@
 import * as variable from "./variables.js" ;
-import {ballSizeUpBoosterValue} from "./variables.js";
+import {ballWidth} from "./variables.js";
 
 export const canvas = document.getElementById('pong');
 const context = canvas.getContext('2d');
@@ -12,7 +12,7 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-canvas.style.backgroundColor = "#f67007";
+canvas.style.backgroundColor = "#ffffff";
 document.body.style.backgroundColor = "#191a1c";
 
 let scoreText = "0";
@@ -20,19 +20,19 @@ let scoreText = "0";
 const ballSprite = new Image();
 ballSprite.src = variable.ballSprite;
 
-const hiddenBoosterSprite = new Image();
+export const hiddenBoosterSprite = new Image();
 hiddenBoosterSprite.src = variable.hiddenBoosterSprite;
-const ballSizeUpBoosterSprite = new Image();
+export const ballSizeUpBoosterSprite = new Image();
 ballSizeUpBoosterSprite.src = variable.ballSizeUpBoosterSprite;
-const ballSizeDownBoosterSprite = new Image();
+export const ballSizeDownBoosterSprite = new Image();
 ballSizeDownBoosterSprite.src = variable.ballSizeDownBoosterSprite;
 
-function setSizeOfPercentOfScreen(canvasSize, elementSize){
+export function setSizeOfPercentOfScreen(canvasSize, elementSize) {
     return canvasSize / 100 * elementSize;
 }
 
-const ball = {
-    x: (canvas.width / 2) -  setSizeOfPercentOfScreen(canvas.width, variable.ballWidth) / 2,
+export const ball = {
+    x: (canvas.width / 2) - setSizeOfPercentOfScreen(canvas.width, variable.ballWidth) / 2,
     y: (canvas.height / 2) - setSizeOfPercentOfScreen(canvas.width, variable.ballHeight) / 2,
     dx: variable.ballDx,
     dy: variable.ballDy,
@@ -48,7 +48,7 @@ const minBallSpeedX = variable.minBallSpeedX;
 const frictionY = variable.frictionY;
 const frictionX = variable.frictionX;
 
-const paddle = {
+export const paddle = {
     x: (canvas.width - setSizeOfPercentOfScreen(canvas.width, variable.paddleWidth)) / 2,
     y: canvas.height / 2 + canvas.height / 4 - setSizeOfPercentOfScreen(canvas.width, variable.paddleHeight) / 2,
     width: setSizeOfPercentOfScreen(canvas.width, variable.paddleWidth),
@@ -80,13 +80,14 @@ const deathZone = {
     height: setSizeOfPercentOfScreen(canvas.width, variable.deadZoneHeight)
 };
 
+//============================================================ BOOSTER ============================================================\\
+
 class BoosterType {
     constructor(sprite, cooldown) {
         let chance = randomRange(1, 101);
-        if (chance <= variable.percentOfHiddenSpriteOfBooster){
+        if (chance <= variable.percentOfHiddenSpriteOfBooster) {
             this.sprite = hiddenBoosterSprite;
-        }
-        else{
+        } else {
             this.sprite = sprite;
         }
 
@@ -94,9 +95,11 @@ class BoosterType {
         this.countdownInterval = null;
     }
 
-    useBoosterPower() {}
+    useBoosterPower() {
+    }
 
-    removeBoosterPower() {}
+    removeBoosterPower() {
+    }
 
     useBooster() {
         this.useBoosterPower();
@@ -118,19 +121,31 @@ class BoosterType {
 
 class BallSizePlusBoosterType extends BoosterType {
     constructor() {
-        super(ballSizeUpBoosterSprite, 5);
+        super(ballSizeUpBoosterSprite, 10);
     }
 
     useBoosterPower() {
         console.log('BALL SIZE UP BOOSTER USED');
-        ball.width += variable.ballSizeUpBoosterValue;
-        ball.height += variable.ballSizeUpBoosterValue;
+        let ballSize = ball.width + setSizeOfPercentOfScreen(canvas.width, variable.ballSizeUpBoosterValue);
+        animation((interval1) => {
+            ball.width += 1;
+            ball.height += 1;
+            if (ball.width >= ballSize) {
+                clearInterval(interval1);
+            }
+        })
     }
 
     removeBoosterPower() {
         console.log('BALL SIZE UP BOOSTER REMOVED');
-        ball.width -= variable.ballSizeUpBoosterValue;
-        ball.height -= variable.ballSizeUpBoosterValue;
+        let ballSize = ball.width - setSizeOfPercentOfScreen(canvas.width, variable.ballSizeUpBoosterValue);
+        animation((interval2) => {
+            ball.width -= 1;
+            ball.height -= 1;
+            if (ball.width <= ballSize) {
+                clearInterval(interval2);
+            }
+        })
     }
 }
 
@@ -151,18 +166,33 @@ class PaddleWidthPlusBoosterType extends BoosterType {
 }
 
 class Booster {
-    constructor(x, y, width, height, type) {
+    constructor(x, y, width, height, type, lifeTime) {
         this.booster = {
             x: x,
             y: y,
             width: width,
             height: height,
-            boosterType: type
+            boosterType: type,
         }
+        this.lifeTime = lifeTime;
+        this.countdownInterval = null
     }
 
     drawBooster() {
         drawSprite(this.booster.boosterType.sprite, this.booster);
+
+        if (this.countdownInterval == null) {
+            this.countdownInterval = setInterval(() => {
+                if (--this.lifeTime < 0) {
+                    clearInterval(this.countdownInterval);
+                    getArrayValue(boostersOnFieldArray, (item, index) => {
+                        if (item === this) {
+                            boostersOnFieldArray.splice(index, 1);
+                        }
+                    })
+                }
+            }, 1000);
+        }
     }
 
     collectBooster() {
@@ -178,7 +208,29 @@ class Booster {
 
 let boostersOnFieldArray = [];
 let activeBoostersArray = [];
-let boosterTypesArray = [PaddleWidthPlusBoosterType, BallSizePlusBoosterType];
+let boosterTypesArray = [BallSizePlusBoosterType];
+
+function spawnRandomBooster() {
+    const RandomClass = boosterTypesArray[randomRange(0, boosterTypesArray.length)];
+
+    return new RandomClass();
+}
+
+function boosterSpawn() {
+    const newBoosterType = spawnRandomBooster();
+
+    let randomBooster = new Booster(randomRange(0, canvas.width - setSizeOfPercentOfScreen(canvas.width, variable.boosterSize)),
+        randomRange(0, canvas.height / 2 - setSizeOfPercentOfScreen(canvas.width, variable.boosterSize)),
+        setSizeOfPercentOfScreen(canvas.width, variable.boosterSize),
+        setSizeOfPercentOfScreen(canvas.width, variable.boosterSize),
+        newBoosterType,
+        randomRange(variable.boosterMinLifeTime, variable.boosterMaxLifeTime));
+    boostersOnFieldArray.push(randomBooster);
+}
+
+//============================================================ BOOSTER ============================================================\\
+
+//============================================================  Score  ============================================================\\
 
 let scoreGlobal = 0
 let score = {
@@ -189,35 +241,20 @@ let score = {
         scoreGlobal = value;
         scoreText = scoreGlobal;
 
-        if(scoreGlobal % variable.boosterSpawnStep === 0){
+        if (scoreGlobal % variable.boosterSpawnStep === 0) {
             let chanceToSpawn = randomRange(0, 100);
-            if(chanceToSpawn <= variable.boosterSpawnChance){
+            if (chanceToSpawn <= variable.boosterSpawnChance) {
                 boosterSpawn();
             }
         }
     },
 };
 
-function spawnRandomBooster() {
-    const RandomClass = boosterTypesArray[randomRange(0, boosterTypesArray.length)];
-
-    return new RandomClass();
-}
-
-function boosterSpawn(){
-    const newBoosterType = spawnRandomBooster();
-
-    let randomBooster = new Booster(randomRange(0, canvas.width - 25),
-        randomRange(0, canvas.height / 2 - 25 - 25),
-        setSizeOfPercentOfScreen(canvas.width, variable.boosterSize),
-        setSizeOfPercentOfScreen(canvas.width, variable.boosterSize),
-        newBoosterType);
-    boostersOnFieldArray.push(randomBooster);
-}
+//============================================================  Score  ============================================================\\
 
 let isGameStarted = false;
 
-// let canMovePaddle = true;
+//============================================================  Events ============================================================\\
 
 function getPointerPos(canvas, event) {
     const rect = canvas.getBoundingClientRect();
@@ -227,45 +264,25 @@ function getPointerPos(canvas, event) {
     };
 }
 
-// canvas.addEventListener('mousemove', (event) => {
-//     if (event.clientY >= canvas.height / 2 && canMovePaddle) {
-//         paddle.x = event.clientX - paddle.width / 2;
-//         paddle.y = event.clientY - paddle.height / 2
-//     }
-// });
 canvas.addEventListener('mousedown', (event) => {
     if (!isGameStarted) {
         isGameStarted = true;
         ball.dx = randomVariant(variable.ballDx, -variable.ballDx);
     }
-    // if (event.clientY >= paddle.y &&
-    //     event.clientY <= paddle.y + paddle.height &&
-    //     event.clientX >= paddle.x &&
-    //     event.clientX <= paddle.x + paddle.width) {
-    //     canMovePaddle = true;
-    // }
 });
 
 canvas.addEventListener('pointermove', (event) => {
-    // if (event.buttons > 0) { // Проверяем, что палец или кнопка нажаты
-    //     if (event.clientY >= canvas.height / 2 && canMovePaddle) {
-    //         paddle.x = event.pageX - paddle.width / 2;
-    //         paddle.y = event.pageY - paddle.height / 2
-    //     }
-    // }
     const pos = getPointerPos(canvas, event);
-    if(pos.y >= canvas.height /2) {
+    if (pos.y >= canvas.height / 2) {
         paddle.x = pos.x - paddle.width / 2;
         paddle.y = pos.y - paddle.height / 2;
     }
     event.preventDefault();
 });
 
-function getArrayValue(array, callback) {
-    for (let i = array.length - 1; i >= 0; i--) {
-        callback(array[i], i, array);
-    }
-}
+//============================================================  Events ============================================================\\
+
+//============================================================  Update ============================================================\\
 
 function gameLoop() {
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -299,6 +316,15 @@ function gameLoop() {
             ball.dx = -ball.dx;
         }
 
+        if(ball.x < 0){
+            // console.log("THAT SAVED YOUR GAME");
+            ball.x = 0;
+        }
+        if(ball.x + ball.width > canvas.width){
+            // console.log("THAT SAVED YOUR GAME");
+            ball.x = canvas.width - ball.width;
+        }
+
         if (collision(ball, paddle) && ball.dy > 0) {
             handlePaddleCollision(ball, paddle);
         }
@@ -318,6 +344,8 @@ function gameLoop() {
 
     requestAnimationFrame(gameLoop);
 }
+
+//============================================================  Update ============================================================\\
 
 function collision(object1, object2) {
     return object1.y + object1.height > object2.y &&
@@ -420,7 +448,7 @@ function handlePaddleCollision(ball, paddle) {
 
 function reachTarget() {
     score.scoreValue++;
-    target.width = randomRange(setSizeOfPercentOfScreen(canvas.width,variable.targetMinWidth) , setSizeOfPercentOfScreen(canvas.width, variable.targetMaxWidth));
+    target.width = randomRange(setSizeOfPercentOfScreen(canvas.width, variable.targetMinWidth), setSizeOfPercentOfScreen(canvas.width, variable.targetMaxWidth));
     target.x = randomRange(0, canvas.width - target.width);
 }
 
@@ -433,15 +461,22 @@ function resetGame() {
     ball.dy = variable.ballDy;
 
     getArrayValue(activeBoostersArray, (item, index) => {
+        // item.removeBoosterPower();
         clearInterval(item.countdownInterval);
-        item.removeBoosterPower();
         activeBoostersArray.splice(index, 1);
     })
 
+
     getArrayValue(boostersOnFieldArray, (item, index) => {
+        clearInterval(item.countdownInterval);
         boostersOnFieldArray.splice(index, 1);
     })
+
+    ball.width = setSizeOfPercentOfScreen(canvas.width, variable.ballWidth);
+    ball.height = setSizeOfPercentOfScreen(canvas.width, variable.ballHeight);
 }
+
+//============================================================ Drawing ============================================================\\
 
 function drawPaddle() {
     drawRect(paddle, "black");
@@ -456,7 +491,7 @@ function drawTarget() {
 }
 
 function drawDeathZone() {
-    drawRect(deathZone, "red");
+    drawRect(deathZone, "#5c5555");
 }
 
 function drawLine() {
@@ -481,16 +516,34 @@ function drawRect(sprite, color) {
     context.closePath();
 }
 
-function drawSprite(image, sprite){
+function drawSprite(image, sprite) {
     context.drawImage(image, sprite.x, sprite.y, sprite.width, sprite.height);
 }
 
-function randomRange(min, max) {
+function animation(callback) {
+    let interval = setInterval(() => {
+        callback(interval)
+    }, 1000 / 60);
+}
+
+//============================================================ Drawing ============================================================\\
+
+//============================================================ System =============================================================\\
+
+export function randomRange(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
-function randomVariant(a, b){
+function randomVariant(a, b) {
     return randomRange(0, 2) === 1 ? a : b;
 }
+
+function getArrayValue(array, callback) {
+    for (let i = array.length - 1; i >= 0; i--) {
+        callback(array[i], i, array);
+    }
+}
+
+//============================================================ System =============================================================\\
 
 gameLoop();
