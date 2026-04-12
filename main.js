@@ -4,37 +4,31 @@ import {ballWidth} from "./variables.js";
 export const canvas = document.getElementById('pong');
 const context = canvas.getContext('2d');
 
-function resizeCanvas() {
-    // const dpr = window.devicePixelRatio || 1;
-    //
-    // const width = window.innerWidth;
-    // const height = window.innerHeight;
-    //
-    // canvas.width = width * dpr;
-    // canvas.height = height * dpr;
-    //
-    // canvas.style.width = width + 'px';
-    // canvas.style.height = height + 'px';
-    //
-    // context.scale(dpr, dpr);
-    //
-// const dpr = window.devicePixelRatio || 1;
-    
+function setup(){
+    const dpr = window.devicePixelRatio || 1;
+
+    // Логические размеры (как вы хотите видеть на экране)
     const width = window.innerWidth;
     const height = window.innerHeight;
 
-    // // Умножаем внутренний буфер на плотность пикселей
-    // canvas.width = width * dpr;
-    // canvas.height = height * dpr;
+    // 1. Устанавливаем физический размер буфера (умножаем на DPR)
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
 
-    // // Оставляем визуальный размер как у окна
-    // canvas.style.width = width + 'px';
-    // canvas.style.height = height + 'px';
+    // 2. Устанавливаем CSS размер (визуальный)
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
 
-    // context.setTransform(1, 0, 0, 1, 0, 0); 
-    // context.scale(dpr, dpr);
+    // 3. Масштабируем контекст, чтобы координаты в коде (0,0, 100,100) 
+    // соответствовали реальным пикселям
+    context.scale(dpr, dpr);
+}
 
-    context.imageSmoothingEnabled = false;
+setup();
+
+function resizeCanvas() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
 }
 
 window.addEventListener('resize', resizeCanvas);
