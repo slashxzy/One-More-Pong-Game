@@ -24,7 +24,7 @@ function setup(){
     context.scale(dpr, dpr);
 }
 
-setup();
+// setup();
 
 function resizeCanvas() {
     const width = window.innerWidth;
