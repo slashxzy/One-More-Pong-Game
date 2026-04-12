@@ -4,25 +4,25 @@ import {ballWidth} from "./variables.js";
 export const canvas = document.getElementById('pong');
 const context = canvas.getContext('2d');
 
-function setup(){
-    const dpr = window.devicePixelRatio || 1;
+// function setup(){
+//     const dpr = window.devicePixelRatio || 1;
 
-    // Логические размеры (как вы хотите видеть на экране)
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+//     // Логические размеры (как вы хотите видеть на экране)
+//     const width = window.innerWidth;
+//     const height = window.innerHeight;
 
-    // 1. Устанавливаем физический размер буфера (умножаем на DPR)
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
+//     // 1. Устанавливаем физический размер буфера (умножаем на DPR)
+//     canvas.width = width * dpr;
+//     canvas.height = height * dpr;
 
-    // 2. Устанавливаем CSS размер (визуальный)
-    canvas.style.width = width + 'px';
-    canvas.style.height = height + 'px';
+//     // 2. Устанавливаем CSS размер (визуальный)
+//     canvas.style.width = width + 'px';
+//     canvas.style.height = height + 'px';
 
-    // 3. Масштабируем контекст, чтобы координаты в коде (0,0, 100,100) 
-    // соответствовали реальным пикселям
-    context.scale(dpr, dpr);
-}
+//     // 3. Масштабируем контекст, чтобы координаты в коде (0,0, 100,100) 
+//     // соответствовали реальным пикселям
+//     context.scale(dpr, dpr);
+// }
 
 // setup();
 
