@@ -18,21 +18,21 @@ function resizeCanvas() {
     //
     // context.scale(dpr, dpr);
     //
-const dpr = window.devicePixelRatio || 1;
+// const dpr = window.devicePixelRatio || 1;
     
     const width = window.innerWidth;
     const height = window.innerHeight;
 
-    // Умножаем внутренний буфер на плотность пикселей
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
+    // // Умножаем внутренний буфер на плотность пикселей
+    // canvas.width = width * dpr;
+    // canvas.height = height * dpr;
 
-    // Оставляем визуальный размер как у окна
-    canvas.style.width = width + 'px';
-    canvas.style.height = height + 'px';
+    // // Оставляем визуальный размер как у окна
+    // canvas.style.width = width + 'px';
+    // canvas.style.height = height + 'px';
 
-    context.setTransform(1, 0, 0, 1, 0, 0); 
-    context.scale(dpr, dpr);
+    // context.setTransform(1, 0, 0, 1, 0, 0); 
+    // context.scale(dpr, dpr);
 
     context.imageSmoothingEnabled = false;
 }
