@@ -18,8 +18,20 @@ function resizeCanvas() {
     //
     // context.scale(dpr, dpr);
     //
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+const dpr = window.devicePixelRatio || 1;
+    
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    // Умножаем внутренний буфер на плотность пикселей
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+
+    // Оставляем визуальный размер как у окна
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+
+    context.imageSmoothingEnabled = false;
 }
 
 window.addEventListener('resize', resizeCanvas);
