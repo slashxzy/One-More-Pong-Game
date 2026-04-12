@@ -31,6 +31,9 @@ const dpr = window.devicePixelRatio || 1;
     canvas.style.width = width + 'px';
     canvas.style.height = height + 'px';
 
+    context.setTransform(1, 0, 0, 1, 0, 0); 
+    context.scale(dpr, dpr);
+
     context.imageSmoothingEnabled = false;
 }
 
