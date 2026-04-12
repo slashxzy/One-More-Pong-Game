@@ -5,21 +5,21 @@ export const canvas = document.getElementById('pong');
 const context = canvas.getContext('2d');
 
 function resizeCanvas() {
-    const dpr = window.devicePixelRatio || 1;
-
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-
-    canvas.style.width = width + 'px';
-    canvas.style.height = height + 'px';
-
-    context.scale(dpr, dpr);
-
-    // canvas.width = window.innerWidth;
-    // canvas.height = window.innerHeight;
+    // const dpr = window.devicePixelRatio || 1;
+    //
+    // const width = window.innerWidth;
+    // const height = window.innerHeight;
+    //
+    // canvas.width = width * dpr;
+    // canvas.height = height * dpr;
+    //
+    // canvas.style.width = width + 'px';
+    // canvas.style.height = height + 'px';
+    //
+    // context.scale(dpr, dpr);
+    //
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 }
 
 window.addEventListener('resize', resizeCanvas);
