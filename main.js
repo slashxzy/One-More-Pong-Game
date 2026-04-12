@@ -37,7 +37,7 @@ resizeCanvas();
 canvas.style.backgroundColor = "#ffffff";
 document.body.style.backgroundColor = "#191a1c";
 
-let scoreText = "0";
+let scoreText = "0 Update1";
 
 const ballSprite = new Image();
 ballSprite.src = variable.ballSprite;
